@@ -1,10 +1,15 @@
 package com.rodrigoeo.galleryimagedetail
 
+import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Toast
+import android.widget.Toolbar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.PickVisualMediaRequest
@@ -16,62 +21,70 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 
 import androidx.compose.ui.Modifier
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.rodrigoeo.galleryimagedetail.adapter.PruebaAdapter
+import com.rodrigoeo.galleryimagedetail.model.ListPruebaUno
 import com.rodrigoeo.galleryimagedetail.model.PruebaUno
-import com.rodrigoeo.galleryimagedetail.ui.theme.GalleryImageDetailTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class MainActivity : ComponentActivity() {
 
-    lateinit var btnadd :Button
-    private lateinit var ivImagen : ImageView
+    lateinit var btnadd: Button
+    private lateinit var ivImagen: ImageView
+    lateinit var rvPrueba: RecyclerView
+    lateinit var floatAdd: FloatingActionButton
+    private lateinit var adapter: PruebaAdapter
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private var listPruebaMutableList: MutableList<PruebaUno> =
+        ListPruebaUno.pruebaList.toMutableList()
 
     //get picherMedia Galery Phone
-    val pickMedia = registerForActivityResult(PickVisualMedia()){ uri ->
-
-        if (uri!=null){
-            ivImagen.setImageURI(uri)
-            Log.d("image", "Seleccionada  $uri")
-        }else{
-            Log.d("image", "Noooo Seleccionada!!!!!!!!")
-
-        }
-    }
+    val pickMedia = registerForActivityResult(PickVisualMedia()) { uri -> }
 
 
-
-
-
-    //get datetime
-    @RequiresApi(Build.VERSION_CODES.O)
-    val dateTime : String = LocalDateTime.now()
-        .format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm:ss a"))
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    val pruebaList = listOf<PruebaUno>(
-        PruebaUno("Foto_1", dateTime, "Image"),
-        PruebaUno("Foto_2", dateTime, "Image"),
-        PruebaUno("Foto_3", dateTime, "Image"),
-        PruebaUno("Foto_4", dateTime, "Image"),
-        PruebaUno("Foto_5", dateTime, "Image"),
-        PruebaUno("Foto_6", dateTime, "Image"),
-        PruebaUno("Foto_7", dateTime, "Image"))
-
+    @SuppressLint("MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btnadd = findViewById(R.id.btn_Add)
-        ivImagen = findViewById(R.id.imageView)
-        btnadd.setOnClickListener{
+        rvPrueba = findViewById(R.id.recyclerViewData)
+        floatAdd = findViewById(R.id.add_fab)
 
+        floatAdd.setOnClickListener() {
             pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+
         }
 
-        pruebaList[0].dateAdd
-        Log.d("fecha", dateTime)
+//        btnadd = findViewById(R.id.btn_Add)
+//        ivImagen = findViewById(R.id.imageView)
+//        btnadd.setOnClickListener{
+//
+//
+//        }
+//
+//        pruebaList[0].dateAdd
+//        Log.d("fecha", dateTime)
+
+
+        //*TODO
+
+        initRecyclerView()
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun initRecyclerView() {
+        adapter = PruebaAdapter(pruebaList = listPruebaMutableList)
+        val manager = LinearLayoutManager(this)
+        rvPrueba.layoutManager = manager
+        rvPrueba.adapter = adapter
     }
 }
+
 

@@ -1,33 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-  <!--  <androidx.recyclerview.widget.RecyclerView
+    <!--First child of CoordinatorLayout layout
+         should be App Bar Layout-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.AndroidMaterial3TopAppBar">
+
+        <!-- Add Material toolbar make the layout_scrollFlags
+              to scroll|enterAlways (Important)-->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:navigationIcon="@drawable/ic_action_name"
+            app:title="@string/app_name" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--Add a recycler view
+        inside layout behaviour add "@string/appbar_scrolling_view_behavior" (Important)
+        by default it comes from the @string-->
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewData"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
--->
-
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        />
-
-
-
-    <Button
-        android:id="@+id/btn_Add"
-        android:text="Galeria"
-        android:background="@color/purple_500"
+        android:layout_height="match_parent"
+        android:background="#D5D2D2"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_fab"
+        style="@style/FormButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_below="@id/imageView"/>
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/add_circle_24"
+        android:background="@drawable/add_circle_24"
+        android:contentDescription="TODO"
+        app:fabSize="normal"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
 
-</FrameLayout>
+
+    <!--
+
+        <Button
+            android:id="@+id/btn_Add"
+            android:text="Galeria"
+            android:background="@color/purple_500"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_below="@id/imageView"/>-->
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
